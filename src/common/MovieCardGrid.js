@@ -1,6 +1,7 @@
 import React from 'react';
 import { CardDeck, Row, Col } from 'reactstrap';
 import MovieCard from './MovieCard';
+import './MovieGrid.css';
 
 const MovieCardGrid = ({ movies = [], onRateMovieClick }) => {
   // sort comparer function
@@ -29,7 +30,11 @@ const MovieCardGrid = ({ movies = [], onRateMovieClick }) => {
         lastIndex + maxMoviesItemsPerRow
       );
 
-      rows.push(<Row key={`row${counter}`}>{groupedMovieItems}</Row>);
+      rows.push(
+        <Row className="movie-card-row" key={`row${counter}`}>
+          {groupedMovieItems}
+        </Row>
+      );
 
       lastIndex = lastIndex + maxMoviesItemsPerRow;
     }
