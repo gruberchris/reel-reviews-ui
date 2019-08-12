@@ -4,7 +4,7 @@ import { Container, Row, Col } from 'reactstrap';
 import PaginationComponent from 'react-reactstrap-pagination';
 import TitleSearch from '../common/TitleSearch';
 import MovieCardGrid from '../common/MovieCardGrid';
-import AddFavoriteModal from '../common/AddFavoriteModal';
+import MovieReviewEditorModal from '../common/MovieReviewEditorModal';
 import { findMoviesByTitleStart } from '../store/actions/searchActions';
 import { addFavoriteStart } from '../store/actions/favoritesActions';
 
@@ -66,7 +66,7 @@ const Search = () => {
     <Container>
       <Row>
         <Col sm={{ size: 6, offset: 3 }}>
-          <AddFavoriteModal
+          <MovieReviewEditorModal
             movie={movie}
             show={showAddFavoriteModal}
             onClose={handleModalClose}

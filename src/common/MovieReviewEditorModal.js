@@ -12,7 +12,7 @@ import {
 } from 'reactstrap';
 import { useModalForm } from '../customHooks';
 
-const AddFavoriteModal = ({ show, movie, onClose, onSubmit }) => {
+const MovieReviewEditorModal = ({ show, movie, onClose, onSubmit }) => {
   const { inputs, handleInputChange, handleSubmit } = useModalForm(inputs =>
     onSubmit(movie, inputs)
   );
@@ -20,13 +20,9 @@ const AddFavoriteModal = ({ show, movie, onClose, onSubmit }) => {
   return (
     <Modal isOpen={show} toggle={onClose}>
       <ModalHeader toggle={onClose}>
-        Rate, Review & Create A Favorite
+        <strong>{`${movie.Title} (${movie.Year})`}</strong>
       </ModalHeader>
       <ModalBody>
-        <div>
-          <h4>{`${movie.Title} (${movie.Year})`}</h4>
-        </div>
-        <br />
         <Form onSubmit={handleSubmit}>
           <FormGroup row>
             <Label sm={{ size: 10, offset: 1 }} for="ratingInput">
@@ -78,4 +74,4 @@ const AddFavoriteModal = ({ show, movie, onClose, onSubmit }) => {
   );
 };
 
-export default AddFavoriteModal;
+export default MovieReviewEditorModal;
