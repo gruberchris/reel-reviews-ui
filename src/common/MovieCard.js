@@ -1,10 +1,14 @@
 import React from 'react';
-import { Card, CardImg, CardBody, CardTitle, Button } from 'reactstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar } from '@fortawesome/free-solid-svg-icons';
+import { Card, CardImg, CardBody, CardTitle } from 'reactstrap';
+import LaunchMovieReviewButton from './LaunchMovieReviewButton';
 import './MovieCard.css';
 
-const MovieCard = ({ movie, onRateMovieClick }) => {
+const MovieCard = ({
+  movie,
+  onRateMovieClick,
+  onDeleteReviewClick,
+  isReadOnly
+}) => {
   return (
     <div>
       <Card body className="text-center">
@@ -18,9 +22,12 @@ const MovieCard = ({ movie, onRateMovieClick }) => {
           <CardTitle>
             {movie.Title} ({movie.Year})
           </CardTitle>
-          <Button color="primary" onClick={() => onRateMovieClick(movie)}>
-            <FontAwesomeIcon icon={faStar} /> Rate & Review
-          </Button>
+          <LaunchMovieReviewButton
+            movie={movie}
+            isReadOnly={isReadOnly}
+            onRateMovieClick={onRateMovieClick}
+            onDeleteReviewClick={onDeleteReviewClick}
+          />
         </CardBody>
       </Card>
     </div>

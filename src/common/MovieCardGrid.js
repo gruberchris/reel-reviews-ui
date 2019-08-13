@@ -3,7 +3,12 @@ import { CardDeck, Row, Col } from 'reactstrap';
 import MovieCard from './MovieCard';
 import './MovieGrid.css';
 
-const MovieCardGrid = ({ movies = [], onRateMovieClick }) => {
+const MovieCardGrid = ({
+  movies = [],
+  onRateMovieClick,
+  onDeleteReviewClick,
+  isReadOnly
+}) => {
   // sort comparer function
   const sortByYear = (a, b) => a.Year - b.Year;
 
@@ -14,7 +19,12 @@ const MovieCardGrid = ({ movies = [], onRateMovieClick }) => {
   const getMovieList = () => {
     const sortedMovieItems = sortedMovies.map(movie => (
       <Col key={movie.imdbID}>
-        <MovieCard movie={movie} onRateMovieClick={onRateMovieClick} />
+        <MovieCard
+          movie={movie}
+          onRateMovieClick={onRateMovieClick}
+          onDeleteReviewClick={onDeleteReviewClick}
+          isReadOnly={isReadOnly}
+        />
       </Col>
     ));
 

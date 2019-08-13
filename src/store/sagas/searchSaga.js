@@ -1,7 +1,11 @@
 import { put, takeEvery } from 'redux-saga/effects';
 import * as actions from '../actions/searchActions';
 
-export function* processFindMoviesStart({ movieTitle, currentPage }) {
+export function* processFindMoviesStart({
+  movieTitle,
+  currentPage,
+  favoriteMovies
+}) {
   try {
     // get config from environment variables
     const omdbApiKey = process.env.REACT_APP_OMDBAPI_KEY;
@@ -30,6 +34,20 @@ export function* processFindMoviesStart({ movieTitle, currentPage }) {
           ? (movie.Poster = 'https://www.123movies.love/images/imdbnoimage.jpg')
           : movie.Poster
       );
+
+      movies.map(movie => {
+        const favoriteMovieByImdbID = favoriteMovie =>
+          favoriteMovie.imdbID === movie.imdbID;
+
+        const matchedFavoriteMovie = favoriteMovies.find(favoriteMovieByImdbID);
+
+        if (matchedFavoriteMovie) {
+          movie.rating = matchedFavoriteMovie.rating;
+          movie.review = matchedFavoriteMovie.review;
+        }
+
+        return movie;
+      });
     }
 
     const payload = {
@@ -48,6 +66,21 @@ export function* processFindMoviesStart({ movieTitle, currentPage }) {
   }
 }
 
+export function* processAppendMovieReviewStart({ movies, movieWithReview }) {
+  try {
+    const comapreImdbId = movie => movie.imdbID === movieWithReview.imdbID;
+    const foundMovieIndex = movies.findIndex(comapreImdbId);
+    movies[foundMovieIndex] = { ...movieWithReview };
+    yield put(actions.appendMovieReviewCompleted({ movies }));
+  } catch (e) {
+    yield put(actions.appendMovieReviewFailed(e));
+  }
+}
+
 export function* watchSearchSaga() {
   yield takeEvery(actions.FIND_MOVIES_BY_TITLE_START, processFindMoviesStart);
+  yield takeEvery(
+    actions.APPEND_MOVIE_REVIEW_START,
+    processAppendMovieReviewStart
+  );
 }

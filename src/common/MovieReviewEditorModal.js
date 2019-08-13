@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Modal,
   ModalHeader,
@@ -10,12 +10,17 @@ import {
   Input,
   Button
 } from 'reactstrap';
-import { useModalForm } from '../customHooks';
 
 const MovieReviewEditorModal = ({ show, movie, onClose, onSubmit }) => {
-  const { inputs, handleInputChange, handleSubmit } = useModalForm(inputs =>
-    onSubmit(movie, inputs)
-  );
+  const [rating, setRating] = useState(0);
+  const [review, setReview] = useState('');
+
+  const handleSubmit = event => {
+    event.preventDefault();
+    onSubmit(movie, { rating: rating, review: review });
+    setRating(0);
+    setReview('');
+  };
 
   return (
     <Modal isOpen={show} toggle={onClose}>
@@ -34,8 +39,8 @@ const MovieReviewEditorModal = ({ show, movie, onClose, onSubmit }) => {
                 name="rating"
                 type="number"
                 placeholder="How many stars would you rate this movie?"
-                onChange={handleInputChange}
-                value={inputs.rating || ''}
+                defaultValue={movie.rating}
+                onChange={e => setRating(e.target.value)}
               />
             </Col>
           </FormGroup>
@@ -51,8 +56,8 @@ const MovieReviewEditorModal = ({ show, movie, onClose, onSubmit }) => {
                 type="textarea"
                 rows="5"
                 placeholder="What do you have to say about this movie?"
-                onChange={handleInputChange}
-                value={inputs.review || ''}
+                defaultValue={movie.review}
+                onChange={e => setReview(e.target.value)}
               />
             </Col>
           </FormGroup>

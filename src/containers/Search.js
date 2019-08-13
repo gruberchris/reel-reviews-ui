@@ -5,12 +5,15 @@ import PaginationComponent from 'react-reactstrap-pagination';
 import TitleSearch from '../common/TitleSearch';
 import MovieCardGrid from '../common/MovieCardGrid';
 import MovieReviewEditorModal from '../common/MovieReviewEditorModal';
-import { findMoviesByTitleStart } from '../store/actions/searchActions';
+import {
+  appendMovieReviewStart,
+  findMoviesByTitleStart
+} from '../store/actions/searchActions';
 import { addFavoriteStart } from '../store/actions/favoritesActions';
 
 const Search = () => {
   const [showAddFavoriteModal, setShowAddFavoriteModal] = useState(false);
-  const [movie, setMovie] = useState('');
+  const [movie, setMovie] = useState({});
   const dispatch = useDispatch();
 
   const {
@@ -21,13 +24,17 @@ const Search = () => {
     totalResults
   } = useSelector(state => state.searchReducer);
 
+  const { favoriteMovies } = useSelector(state => state.favoritesReducer);
+
   // clicking on the search button will always request the first page of whatever the query is, which is 1
   const handleSearchClick = movieTitle =>
-    dispatch(findMoviesByTitleStart(movieTitle, 1));
+    dispatch(findMoviesByTitleStart(movieTitle, 1, favoriteMovies));
 
   const handlePaginationClick = selectedPage => {
     if (selectedPage !== currentPage) {
-      dispatch(findMoviesByTitleStart(queryMovieTitle, selectedPage));
+      dispatch(
+        findMoviesByTitleStart(queryMovieTitle, selectedPage, favoriteMovies)
+      );
     }
   };
 
@@ -36,24 +43,25 @@ const Search = () => {
     setShowAddFavoriteModal(true);
   };
 
-  const handleModalSubmit = (movie, review) => {
-    dispatch(
-      addFavoriteStart({
-        imdbID: movie.imdbID,
-        Title: movie.Title,
-        Year: movie.Year,
-        Poster: movie.Poster,
-        rating: review.rating,
-        review: review.review
-      })
-    );
-
-    handleModalClose();
+  const handleModalClose = () => {
+    setMovie({});
+    setShowAddFavoriteModal(false);
   };
 
-  const handleModalClose = () => {
-    setMovie('');
-    setShowAddFavoriteModal(false);
+  const handleModalSubmit = (movie, review) => {
+    const movieWithReview = {
+      imdbID: movie.imdbID,
+      Title: movie.Title,
+      Year: movie.Year,
+      Poster: movie.Poster,
+      rating: review.rating,
+      review: review.review
+    };
+
+    dispatch(addFavoriteStart(movieWithReview));
+    dispatch(appendMovieReviewStart(movies, movieWithReview));
+
+    handleModalClose();
   };
 
   // omdbapi seems to not return more than 10 movies per page. Does not appear to be configurable
@@ -85,6 +93,7 @@ const Search = () => {
           <MovieCardGrid
             movies={movies}
             onRateMovieClick={handleRateMovieClick}
+            isReadOnly={true}
           />
           <br />
         </Col>

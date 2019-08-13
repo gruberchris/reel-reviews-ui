@@ -14,11 +14,22 @@ const update = (state = INITIAL_STATE, action) => {
         favoriteMovies: [...state.favoriteMovies, action.message]
       };
 
+    case favoritesActions.DELETE_FAVORITE_FAILED:
+    case favoritesActions.UPDATE_FAVORITE_FAILED:
+    case favoritesActions.GET_ALL_FAVORITES_FAILED:
     case favoritesActions.ADD_FAVORITE_FAILED:
       return {
-        ...INITIAL_STATE,
+        ...state,
         error: action.error.message,
         friendlyErrorMessage: action.error.friendlyErrorMessage
+      };
+
+    case favoritesActions.DELETE_FAVORITE_COMPLETED:
+    case favoritesActions.UPDATE_FAVORITE_COMPLETED:
+    case favoritesActions.GET_ALL_FAVORITES_COMPLETED:
+      return {
+        ...state,
+        favoriteMovies: [...action.message.favoriteMovies]
       };
 
     default:
