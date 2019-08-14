@@ -7,6 +7,10 @@ import {
   updateFavoriteStart,
   deleteFavoriteStart
 } from '../store/actions/favoritesActions';
+import {
+  favoriteRemovedStart,
+  favoriteUpdatedStart
+} from '../store/actions/searchActions';
 
 const Favorites = () => {
   const [showAddFavoriteModal, setShowAddFavoriteModal] = useState(false);
@@ -16,6 +20,8 @@ const Favorites = () => {
   const { favoriteMovies, friendlyErrorMessage } = useSelector(
     state => state.favoritesReducer
   );
+
+  const { movies } = useSelector(state => state.searchReducer);
 
   const handleRateMovieClick = movie => {
     setMovie(movie);
@@ -34,12 +40,15 @@ const Favorites = () => {
     };
 
     dispatch(updateFavoriteStart(movieWithReview, favoriteMovies));
+    dispatch(favoriteUpdatedStart(movieWithReview, movies));
 
     handleModalClose();
   };
 
-  const handleDeleteReviewClick = movie =>
+  const handleDeleteReviewClick = movie => {
     dispatch(deleteFavoriteStart(movie, favoriteMovies));
+    dispatch(favoriteRemovedStart(movie, movies));
+  };
 
   return (
     <Container>

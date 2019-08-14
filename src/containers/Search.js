@@ -5,8 +5,10 @@ import PaginationComponent from 'react-reactstrap-pagination';
 import TitleSearch from '../common/TitleSearch';
 import MovieCardGrid from '../common/MovieCardGrid';
 import MovieReviewEditorModal from '../common/MovieReviewEditorModal';
+import MovieReviewViewerModal from '../common/MovieReviewViewerModal';
+import ErrorMessagePanel from '../common/ErrorMessagePanel';
 import {
-  appendMovieReviewStart,
+  favoriteCreatedStart,
   findMoviesByTitleStart
 } from '../store/actions/searchActions';
 import { addFavoriteStart } from '../store/actions/favoritesActions';
@@ -59,7 +61,7 @@ const Search = () => {
     };
 
     dispatch(addFavoriteStart(movieWithReview));
-    dispatch(appendMovieReviewStart(movies, movieWithReview));
+    dispatch(favoriteCreatedStart(movieWithReview, movies));
 
     handleModalClose();
   };
@@ -70,16 +72,28 @@ const Search = () => {
   // show pagination control only if there are movie items in the movies array
   const showPagination = !!(movies && movies.length > 0);
 
+  const isFavoriteMovie = !!(movie && movie.rating && movie.review);
+
   return (
     <Container>
       <Row>
         <Col sm={{ size: 6, offset: 3 }}>
-          <MovieReviewEditorModal
-            movie={movie}
-            show={showAddFavoriteModal}
-            onClose={handleModalClose}
-            onSubmit={handleModalSubmit}
-          />
+          {isFavoriteMovie && (
+            <MovieReviewViewerModal
+              movie={movie}
+              show={showAddFavoriteModal}
+              onClose={handleModalClose}
+              onSubmit={handleModalSubmit}
+            />
+          )}
+          {!isFavoriteMovie && (
+            <MovieReviewEditorModal
+              movie={movie}
+              show={showAddFavoriteModal}
+              onClose={handleModalClose}
+              onSubmit={handleModalSubmit}
+            />
+          )}
           <div className="text-center">
             <h2>It's Time For Reel Reviews!</h2>
           </div>
@@ -108,7 +122,9 @@ const Search = () => {
               onSelect={handlePaginationClick}
             />
           )}
-          <div>{friendlyErrorMessage}</div>
+          {friendlyErrorMessage && (
+            <ErrorMessagePanel errorMessage={friendlyErrorMessage} />
+          )}
         </Col>
       </Row>
     </Container>
