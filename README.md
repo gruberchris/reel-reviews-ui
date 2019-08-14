@@ -18,9 +18,10 @@ REACT_APP_NO_MOVIE_POSTER_IMAGE_URL | URL to the no poster image | https://www.1
 
 `docker pull chrisgruber/reel-reviews-ui`
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
+
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 In the project directory, you can run:
 
