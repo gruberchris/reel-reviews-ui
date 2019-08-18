@@ -89,7 +89,7 @@ const Search = () => {
             <h2>It's Time For Reel Reviews!</h2>
           </div>
           <br />
-          <TitleSearch onSeachClick={handleSearchClick} />
+          <TitleSearch onSeachClick={handleSearchClick} searchQuery={queryMovieTitle} />
           <br />
         </Col>
       </Row>
