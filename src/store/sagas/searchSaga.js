@@ -1,22 +1,17 @@
 import { put, takeEvery } from 'redux-saga/effects';
 import * as actions from '../actions/searchActions';
 
-export function* processFindMoviesStart({
-  movieTitle,
-  currentPage,
-  favoriteMovies
-}) {
+export function* processFindMoviesStart({ movieTitle, currentPage, favoriteMovies }) {
   try {
     // get config from environment variables
     const omdbApiKey = process.env.REACT_APP_OMDBAPI_KEY;
-    const omdbApiUrl =
-      process.env.REACT_APP_OMDBAPI_URL || 'https://www.omdbapi.com/';
-    const noMoviePosterImageUrl =
-      process.env.REACT_APP_NO_MOVIE_POSTER_IMAGE_URL;
+    const omdbApiUrl = process.env.REACT_APP_OMDBAPI_URL || 'https://www.omdbapi.com/';
+    const noMoviePosterImageUrl = process.env.REACT_APP_NO_MOVIE_POSTER_IMAGE_URL;
 
     const requestUrl = encodeURI(
       `${omdbApiUrl}/?s=${movieTitle}&page=${currentPage}&type=movie&apiKey=${omdbApiKey}`
     );
+
     const response = yield fetch(requestUrl);
 
     // response data from omdbapi in json format
@@ -38,8 +33,7 @@ export function* processFindMoviesStart({
         }
 
         // search comparer function
-        const favoriteMovieByImdbID = favoriteMovie =>
-          favoriteMovie.imdbID === movie.imdbID;
+        const favoriteMovieByImdbID = favoriteMovie => favoriteMovie.imdbID === movie.imdbID;
 
         // find if this movie is already a favorite
         const matchedFavoriteMovie = favoriteMovies.find(favoriteMovieByImdbID);

@@ -3,23 +3,15 @@ import MovieCardGrid from '../common/MovieCardGrid';
 import { Col, Container, Row } from 'reactstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import MovieReviewEditorModal from '../common/MovieReviewEditorModal';
-import {
-  updateFavoriteStart,
-  deleteFavoriteStart
-} from '../store/actions/favoritesActions';
-import {
-  favoriteRemovedStart,
-  favoriteUpdatedStart
-} from '../store/actions/searchActions';
+import { updateFavoriteStart, deleteFavoriteStart } from '../store/actions/favoritesActions';
+import { favoriteRemovedStart, favoriteUpdatedStart } from '../store/actions/searchActions';
 
 const Favorites = () => {
   const [showAddFavoriteModal, setShowAddFavoriteModal] = useState(false);
   const [movie, setMovie] = useState({});
   const dispatch = useDispatch();
 
-  const { favoriteMovies, friendlyErrorMessage } = useSelector(
-    state => state.favoritesReducer
-  );
+  const { favoriteMovies, friendlyErrorMessage } = useSelector(state => state.favoritesReducer);
 
   const { movies } = useSelector(state => state.searchReducer);
 

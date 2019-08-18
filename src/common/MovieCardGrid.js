@@ -3,12 +3,7 @@ import { CardDeck, Row, Col } from 'reactstrap';
 import MovieCard from './MovieCard';
 import './MovieGrid.css';
 
-const MovieCardGrid = ({
-  movies = [],
-  onRateMovieClick,
-  onDeleteReviewClick,
-  isReadOnly
-}) => {
+const MovieCardGrid = ({ movies = [], onRateMovieClick, onDeleteReviewClick, isReadOnly }) => {
   // sort comparer function
   const sortByYear = (a, b) => a.Year - b.Year;
 
@@ -35,10 +30,7 @@ const MovieCardGrid = ({
     let lastIndex = 0;
 
     for (let counter = 0; counter < totalRows; counter++) {
-      const groupedMovieItems = sortedMovieItems.slice(
-        lastIndex,
-        lastIndex + maxMoviesItemsPerRow
-      );
+      const groupedMovieItems = sortedMovieItems.slice(lastIndex, lastIndex + maxMoviesItemsPerRow);
 
       rows.push(
         <Row className="movie-card-row" key={`row${counter}`}>

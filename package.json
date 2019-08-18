@@ -38,9 +38,6 @@
       "prettier/prettier": "error"
     }
   },
-  "prettier": {
-    "singleQuote": true
-  },
   "browserslist": {
     "production": [
       ">0.2%",

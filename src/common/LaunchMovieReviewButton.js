@@ -1,18 +1,9 @@
 import React, { useState } from 'react';
 import { Button, ButtonGroup, Tooltip } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faBookReader,
-  faStar,
-  faTrash
-} from '@fortawesome/free-solid-svg-icons';
+import { faBookReader, faStar, faTrash } from '@fortawesome/free-solid-svg-icons';
 
-const LaunchMovieReviewButton = ({
-  movie,
-  isReadOnly,
-  onRateMovieClick,
-  onDeleteReviewClick
-}) => {
+const LaunchMovieReviewButton = ({ movie, isReadOnly, onRateMovieClick, onDeleteReviewClick }) => {
   const [showDeleteTooltip, setShowDeleteTooltip] = useState(false);
   const [showEditTooltip, setShowEditTooltip] = useState(false);
 

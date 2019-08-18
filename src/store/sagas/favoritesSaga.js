@@ -85,9 +85,7 @@ export function* processDeleteFavoriteStart({ movie, favoriteMovies }) {
       mode: 'cors'
     });
 
-    const updatedFavoriteMovies = favoriteMovies.filter(
-      fav => fav._id !== movie._id
-    );
+    const updatedFavoriteMovies = favoriteMovies.filter(fav => fav._id !== movie._id);
 
     const payload = { favoriteMovies: updatedFavoriteMovies };
 

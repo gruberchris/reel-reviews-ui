@@ -7,10 +7,7 @@ import MovieCardGrid from '../common/MovieCardGrid';
 import MovieReviewEditorModal from '../common/MovieReviewEditorModal';
 import MovieReviewViewerModal from '../common/MovieReviewViewerModal';
 import ErrorMessagePanel from '../common/ErrorMessagePanel';
-import {
-  favoriteCreatedStart,
-  findMoviesByTitleStart
-} from '../store/actions/searchActions';
+import { favoriteCreatedStart, findMoviesByTitleStart } from '../store/actions/searchActions';
 import { addFavoriteStart } from '../store/actions/favoritesActions';
 
 const Search = () => {
@@ -18,13 +15,9 @@ const Search = () => {
   const [movie, setMovie] = useState({});
   const dispatch = useDispatch();
 
-  const {
-    queryMovieTitle,
-    movies,
-    currentPage,
-    friendlyErrorMessage,
-    totalResults
-  } = useSelector(state => state.searchReducer);
+  const { queryMovieTitle, movies, currentPage, friendlyErrorMessage, totalResults } = useSelector(
+    state => state.searchReducer
+  );
 
   const { favoriteMovies } = useSelector(state => state.favoritesReducer);
 
@@ -34,9 +27,7 @@ const Search = () => {
 
   const handlePaginationClick = selectedPage => {
     if (selectedPage !== currentPage) {
-      dispatch(
-        findMoviesByTitleStart(queryMovieTitle, selectedPage, favoriteMovies)
-      );
+      dispatch(findMoviesByTitleStart(queryMovieTitle, selectedPage, favoriteMovies));
     }
   };
 
@@ -122,9 +113,7 @@ const Search = () => {
               onSelect={handlePaginationClick}
             />
           )}
-          {friendlyErrorMessage && (
-            <ErrorMessagePanel errorMessage={friendlyErrorMessage} />
-          )}
+          {friendlyErrorMessage && <ErrorMessagePanel errorMessage={friendlyErrorMessage} />}
         </Col>
       </Row>
     </Container>
