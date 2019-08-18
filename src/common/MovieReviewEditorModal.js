@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Modal,
   ModalHeader,
@@ -12,14 +12,23 @@ import {
 } from 'reactstrap';
 
 const MovieReviewEditorModal = ({ show, movie, onClose, onSubmit }) => {
-  const [rating, setRating] = useState(0);
-  const [review, setReview] = useState('');
+  const [values, setValues] = useState({ rating: 0, review: '' });
+
+  useEffect(() => {
+    setValues({
+      rating: movie.rating ? movie.rating : 0,
+      review: movie.review ? movie.review : ''
+    });
+  }, [movie.rating, movie.review]);
 
   const handleSubmit = event => {
     event.preventDefault();
-    onSubmit(movie, { rating: rating, review: review });
-    setRating(0);
-    setReview('');
+    onSubmit(movie, { rating: values.rating, review: values.review });
+  };
+
+  const handleInputChange = e => {
+    const { name, value } = e.target;
+    setValues({ ...values, [name]: value });
   };
 
   return (
@@ -39,8 +48,8 @@ const MovieReviewEditorModal = ({ show, movie, onClose, onSubmit }) => {
                 name="rating"
                 type="number"
                 placeholder="How many stars would you rate this movie?"
-                defaultValue={movie.rating}
-                onChange={e => setRating(e.target.value)}
+                value={values.rating}
+                onChange={handleInputChange}
               />
             </Col>
           </FormGroup>
@@ -56,8 +65,8 @@ const MovieReviewEditorModal = ({ show, movie, onClose, onSubmit }) => {
                 type="textarea"
                 rows="5"
                 placeholder="What do you have to say about this movie?"
-                defaultValue={movie.review}
-                onChange={e => setReview(e.target.value)}
+                value={values.review}
+                onChange={handleInputChange}
               />
             </Col>
           </FormGroup>
