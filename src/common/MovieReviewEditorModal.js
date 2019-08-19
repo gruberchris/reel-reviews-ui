@@ -12,24 +12,48 @@ import {
 } from 'reactstrap';
 
 const MovieReviewEditorModal = ({ show, movie, onClose, onSubmit }) => {
-  const [values, setValues] = useState({ rating: 0, review: '' });
+  const initialStateValue = { rating: '', review: '' };
+  const [values, setValues] = useState(initialStateValue);
 
   useEffect(() => {
     setValues({
-      rating: movie.rating ? movie.rating : 0,
-      review: movie.review ? movie.review : ''
+      rating: movie.rating ? movie.rating : initialStateValue.rating,
+      review: movie.review ? movie.review : initialStateValue.review
     });
-  }, [movie.rating, movie.review]);
+  }, [initialStateValue.rating, initialStateValue.review, movie.rating, movie.review]);
 
   const handleSubmit = event => {
     event.preventDefault();
     onSubmit(movie, { rating: values.rating, review: values.review });
+    setValues(initialStateValue);
   };
 
   const handleInputChange = e => {
     const { name, value } = e.target;
     setValues({ ...values, [name]: value });
   };
+
+  const handleRatingChange = e => {
+    const { value } = e.target;
+    const parsedRating = value ? parseInt(value) : initialStateValue.rating;
+    setValues({ ...values, rating: parsedRating });
+  };
+
+  const handleCloseClick = () => {
+    setValues(initialStateValue);
+    onClose();
+  };
+
+  const isFormClean = () => {
+    if (!(movie.rating && movie.review)) {
+      // not an existing favorite
+      return false;
+    }
+
+    return movie.rating === values.rating && movie.review.localeCompare(values.review) === 0;
+  };
+
+  const isSaveButtonDisabled = isFormClean();
 
   return (
     <Modal isOpen={show} toggle={onClose}>
@@ -49,7 +73,7 @@ const MovieReviewEditorModal = ({ show, movie, onClose, onSubmit }) => {
                 type="number"
                 placeholder="How many stars would you rate this movie?"
                 value={values.rating}
-                onChange={handleInputChange}
+                onChange={handleRatingChange}
               />
             </Col>
           </FormGroup>
@@ -73,11 +97,11 @@ const MovieReviewEditorModal = ({ show, movie, onClose, onSubmit }) => {
 
           <FormGroup>
             <Col sm={{ size: 'auto', offset: 7 }}>
-              <Button color="danger" onClick={onClose}>
+              <Button color="danger" onClick={handleCloseClick}>
                 Cancel
               </Button>
               {'   '}
-              <Button color="primary" type="submit">
+              <Button color="primary" type="submit" disabled={isSaveButtonDisabled}>
                 Save
               </Button>
             </Col>

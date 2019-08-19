@@ -74,7 +74,6 @@ const Search = () => {
               movie={movie}
               show={showAddFavoriteModal}
               onClose={handleModalClose}
-              onSubmit={handleModalSubmit}
             />
           )}
           {!isFavoriteMovie && (

@@ -29,6 +29,7 @@ const MovieReviewViewerModal = ({ show, movie, onClose }) => (
               type="number"
               placeholder="How many stars would you rate this movie?"
               value={movie.rating}
+              readOnly
             />
           </Col>
         </FormGroup>
@@ -45,6 +46,7 @@ const MovieReviewViewerModal = ({ show, movie, onClose }) => (
               rows="5"
               placeholder="What do you have to say about this movie?"
               value={movie.review}
+              readOnly
             />
           </Col>
         </FormGroup>
