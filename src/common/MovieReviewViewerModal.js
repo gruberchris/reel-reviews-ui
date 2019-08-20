@@ -10,6 +10,7 @@ import {
   Input,
   Button
 } from 'reactstrap';
+import './MovieReviewViewerModal.css';
 
 const MovieReviewViewerModal = ({ show, movie, onClose }) => (
   <Modal isOpen={show} toggle={onClose}>
@@ -53,7 +54,7 @@ const MovieReviewViewerModal = ({ show, movie, onClose }) => (
 
         <FormGroup>
           <Col sm={{ size: 'auto', offset: 9 }}>
-            <Button color="primary" onClick={onClose}>
+            <Button className="primary-button" color="primary" onClick={onClose}>
               Close
             </Button>
           </Col>

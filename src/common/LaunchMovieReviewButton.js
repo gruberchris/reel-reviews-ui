@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Button, ButtonGroup, Tooltip } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBookReader, faStar, faTrash } from '@fortawesome/free-solid-svg-icons';
+import './LaunchMovieReviewButton.css';
 
 const LaunchMovieReviewButton = ({ movie, isReadOnly, onRateMovieClick, onDeleteReviewClick }) => {
   const [showDeleteTooltip, setShowDeleteTooltip] = useState(false);
@@ -10,7 +11,7 @@ const LaunchMovieReviewButton = ({ movie, isReadOnly, onRateMovieClick, onDelete
   if (movie.rating || movie.review) {
     if (isReadOnly) {
       return (
-        <Button color="success" onClick={() => onRateMovieClick(movie)}>
+        <Button className="success-button" color="success" onClick={() => onRateMovieClick(movie)}>
           <FontAwesomeIcon icon={faBookReader} /> Read Review
         </Button>
       );
@@ -20,6 +21,7 @@ const LaunchMovieReviewButton = ({ movie, isReadOnly, onRateMovieClick, onDelete
       <ButtonGroup size="lg">
         <Button
           id={`deleteMovieButton${movie.imdbID}`}
+          className="danger-button"
           color="danger"
           onClick={() => onDeleteReviewClick(movie)}
         >
@@ -35,6 +37,7 @@ const LaunchMovieReviewButton = ({ movie, isReadOnly, onRateMovieClick, onDelete
         </Tooltip>
         <Button
           id={`editMovieButton${movie.imdbID}`}
+          className="success-button"
           color="success"
           onClick={() => onRateMovieClick(movie)}
         >
@@ -53,7 +56,7 @@ const LaunchMovieReviewButton = ({ movie, isReadOnly, onRateMovieClick, onDelete
   }
 
   return (
-    <Button color="primary" onClick={() => onRateMovieClick(movie)}>
+    <Button className="primary-button" color="primary" onClick={() => onRateMovieClick(movie)}>
       <FontAwesomeIcon icon={faStar} /> Rate & Review
     </Button>
   );

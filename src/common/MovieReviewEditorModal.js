@@ -10,6 +10,7 @@ import {
   Input,
   Button
 } from 'reactstrap';
+import './MovieReviewEditorModal.css';
 
 const MovieReviewEditorModal = ({ show, movie, onClose, onSubmit }) => {
   const initialStateValue = { rating: '', review: '' };
@@ -97,11 +98,16 @@ const MovieReviewEditorModal = ({ show, movie, onClose, onSubmit }) => {
 
           <FormGroup>
             <Col sm={{ size: 'auto', offset: 7 }}>
-              <Button color="danger" onClick={handleCloseClick}>
+              <Button className="danger-button" color="danger" onClick={handleCloseClick}>
                 Cancel
               </Button>
               {'   '}
-              <Button color="primary" type="submit" disabled={isSaveButtonDisabled}>
+              <Button
+                className="primary-button"
+                color="primary"
+                type="submit"
+                disabled={isSaveButtonDisabled}
+              >
                 Save
               </Button>
             </Col>

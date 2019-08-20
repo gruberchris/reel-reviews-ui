@@ -27,6 +27,7 @@ const TitleSearch = ({ onSeachClick, searchQuery }) => {
             value={movieTitle}
             placeholder="Search for a movie by it's title"
             id="movie-search-input"
+            autoComplete="off"
           />
           <InputGroupAddon addonType="append">
             <Button className="searchButton" type="submit" color="primary">

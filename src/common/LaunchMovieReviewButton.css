@@ -1,0 +1,11 @@
+.success-button:hover {
+    border: 2px solid #28a745;
+}
+
+.danger-button:hover {
+    border: 2px solid #dc3545;
+}
+
+.primary-button:hover {
+    border: 2px solid #007bff;
+}
