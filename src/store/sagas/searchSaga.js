@@ -8,45 +8,50 @@ export function* processFindMoviesStart({ movieTitle, currentPage, favoriteMovie
     const omdbApiUrl = process.env.REACT_APP_OMDBAPI_URL || 'https://www.omdbapi.com/';
     const noMoviePosterImageUrl = process.env.REACT_APP_NO_MOVIE_POSTER_IMAGE_URL;
 
-    const requestUrl = encodeURI(
-      `${omdbApiUrl}/?s=${movieTitle}&page=${currentPage}&type=movie&apiKey=${omdbApiKey}`
-    );
-
-    const response = yield fetch(requestUrl);
-
-    // response data from omdbapi in json format
-    let { Search: movies, totalResults } = yield response.json();
-
-    totalResults = parseInt(totalResults);
-
     let friendlyErrorMessage = '';
     let error = null;
+    let movies = [];
+    let totalResults = 0;
 
-    if (!movies) {
-      movies = [];
-      friendlyErrorMessage = `No movies found named "${movieTitle}"`;
-    } else {
-      movies.map(movie => {
-        // assign no movie poster image if there no poster is assigned
-        if (movie.Poster === 'N/A') {
-          movie.Poster = noMoviePosterImageUrl;
-        }
+    if (movieTitle) {
+      const requestUrl = encodeURI(
+        `${omdbApiUrl}/?s=${movieTitle}&page=${currentPage}&type=movie&apiKey=${omdbApiKey}`
+      );
 
-        // search comparer function
-        const favoriteMovieByImdbID = favoriteMovie => favoriteMovie.imdbID === movie.imdbID;
+      const response = yield fetch(requestUrl);
 
-        // find if this movie is already a favorite
-        const matchedFavoriteMovie = favoriteMovies.find(favoriteMovieByImdbID);
+      // response data from omdbapi in json format
+      let responseJson = yield response.json();
 
-        // if this movie is a favorite, copy the rating and review
-        // user will see this as a reviewed movie in search results
-        if (matchedFavoriteMovie) {
-          movie.rating = matchedFavoriteMovie.rating;
-          movie.review = matchedFavoriteMovie.review;
-        }
+      totalResults = parseInt(totalResults);
+      movies = responseJson.Search;
 
-        return movie;
-      });
+      if (!movies) {
+        movies = [];
+        friendlyErrorMessage = `Your search for <strong>"${movieTitle}"</strong> did not match any movies.`;
+      } else {
+        movies.map(movie => {
+          // assign no movie poster image if there no poster is assigned
+          if (movie.Poster === 'N/A') {
+            movie.Poster = noMoviePosterImageUrl;
+          }
+
+          // search comparer function
+          const favoriteMovieByImdbID = favoriteMovie => favoriteMovie.imdbID === movie.imdbID;
+
+          // find if this movie is already a favorite
+          const matchedFavoriteMovie = favoriteMovies.find(favoriteMovieByImdbID);
+
+          // if this movie is a favorite, copy the rating and review
+          // user will see this as a reviewed movie in search results
+          if (matchedFavoriteMovie) {
+            movie.rating = matchedFavoriteMovie.rating;
+            movie.review = matchedFavoriteMovie.review;
+          }
+
+          return movie;
+        });
+      }
     }
 
     const payload = {

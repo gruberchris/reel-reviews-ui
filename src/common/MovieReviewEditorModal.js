@@ -57,8 +57,9 @@ const MovieReviewEditorModal = ({ show, movie, onClose, onSubmit }) => {
 
   const isSaveButtonDisabled = isFormClean();
   const isReviewInputValid = !!(!errors.review && values.review && values.review !== movie.review);
+  const parsedRating = parseInt(values.rating);
   const isRatingInputValid =
-    !errors.rating && (values.rating < 11 && values.rating > -11 && values.rating !== movie.rating);
+    !errors.rating && (parsedRating < 11 && parsedRating > -11 && parsedRating !== movie.rating);
 
   return (
     <Modal isOpen={show} toggle={onClose}>

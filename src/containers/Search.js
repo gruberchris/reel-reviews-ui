@@ -6,7 +6,7 @@ import TitleSearch from '../common/TitleSearch';
 import MovieCardGrid from '../common/MovieCardGrid';
 import MovieReviewEditorModal from '../common/MovieReviewEditorModal';
 import MovieReviewViewerModal from '../common/MovieReviewViewerModal';
-import ErrorMessagePanel from '../common/ErrorMessagePanel';
+import InfoMessagePanel from '../common/InfoMessagePanel';
 import { favoriteCreatedStart, findMoviesByTitleStart } from '../store/actions/searchActions';
 import { addFavoriteStart } from '../store/actions/favoritesActions';
 
@@ -112,7 +112,7 @@ const Search = () => {
               onSelect={handlePaginationClick}
             />
           )}
-          {friendlyErrorMessage && <ErrorMessagePanel errorMessage={friendlyErrorMessage} />}
+          {friendlyErrorMessage && <InfoMessagePanel message={friendlyErrorMessage} />}
         </Col>
       </Row>
     </Container>
