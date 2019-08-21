@@ -56,6 +56,9 @@ const MovieReviewEditorModal = ({ show, movie, onClose, onSubmit }) => {
   };
 
   const isSaveButtonDisabled = isFormClean();
+  const isReviewInputValid = !!(!errors.review && values.review && values.review !== movie.review);
+  const isRatingInputValid =
+    !errors.rating && (values.rating < 11 && values.rating > -11 && values.rating !== movie.rating);
 
   return (
     <Modal isOpen={show} toggle={onClose}>
@@ -78,7 +81,11 @@ const MovieReviewEditorModal = ({ show, movie, onClose, onSubmit }) => {
                 value={values.rating || ''}
                 onChange={handleChange}
                 required
-                invalid={errors.rating}
+                invalid={!!errors.rating}
+                valid={isRatingInputValid}
+                min="-10"
+                max="10"
+                step="1"
               />
               {errors.rating && (
                 <Alert className="input-error-message" color="danger">
@@ -103,7 +110,8 @@ const MovieReviewEditorModal = ({ show, movie, onClose, onSubmit }) => {
                 value={values.review || ''}
                 onChange={handleChange}
                 required
-                invalid={errors.review}
+                invalid={!!errors.review}
+                valid={isReviewInputValid}
               />
               {errors.review && (
                 <Alert className="input-error-message" color="danger">

@@ -61,7 +61,7 @@ const Search = () => {
   const maxTotalMoviesPerPage = 10;
 
   // show pagination control only if there are movie items in the movies array
-  const showPagination = !!(movies && movies.length > 0);
+  const showPagination = !!(movies && movies.length > 0 && totalResults > 10);
 
   const isFavoriteMovie = !!(movie && movie.rating && movie.review);
 
