@@ -5,3 +5,8 @@
 .primary-button:hover {
     border: 2px solid #007bff;
 }
+
+.input-error-message {
+    font-size: 14px;
+    line-height: 1;
+}

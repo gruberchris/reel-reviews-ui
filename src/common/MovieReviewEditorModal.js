@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import {
+  Alert,
   Modal,
   ModalHeader,
   ModalBody,
@@ -10,39 +11,39 @@ import {
   Input,
   Button
 } from 'reactstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+import useValidation from '../customHooks/useValidation';
 import './MovieReviewEditorModal.css';
 
 const MovieReviewEditorModal = ({ show, movie, onClose, onSubmit }) => {
-  const initialStateValue = { rating: '', review: '' };
-  const [values, setValues] = useState(initialStateValue);
+  const onValidate = values => {
+    let errors = {};
 
-  useEffect(() => {
-    setValues({
-      rating: movie.rating ? movie.rating : initialStateValue.rating,
-      review: movie.review ? movie.review : initialStateValue.review
-    });
-  }, [initialStateValue.rating, initialStateValue.review, movie.rating, movie.review]);
+    if (!values.rating) {
+      errors.rating = 'Movie rating is required';
+    } else if (values.rating > 10 || values.rating < -10) {
+      errors.rating = 'Movie rating must be between -10 and 10';
+    }
 
-  const handleSubmit = event => {
-    event.preventDefault();
-    onSubmit(movie, { rating: values.rating, review: values.review });
-    setValues(initialStateValue);
+    if (!values.review) {
+      errors.review = 'Movie review is required';
+    }
+
+    return errors;
   };
 
-  const handleInputChange = e => {
-    const { name, value } = e.target;
-    setValues({ ...values, [name]: value });
-  };
+  const onValidated = () => onSubmit(movie, { rating: values.rating, review: values.review });
 
-  const handleRatingChange = e => {
-    const { value } = e.target;
-    const parsedRating = value ? parseInt(value) : initialStateValue.rating;
-    setValues({ ...values, rating: parsedRating });
-  };
+  const { values, errors, handleChange, handleSubmit, clearState } = useValidation(
+    onValidate,
+    onValidated,
+    movie
+  );
 
   const handleCloseClick = () => {
-    setValues(initialStateValue);
     onClose();
+    clearState();
   };
 
   const isFormClean = () => {
@@ -62,7 +63,7 @@ const MovieReviewEditorModal = ({ show, movie, onClose, onSubmit }) => {
         <strong>{`${movie.Title} (${movie.Year})`}</strong>
       </ModalHeader>
       <ModalBody>
-        <Form onSubmit={handleSubmit}>
+        <Form onSubmit={handleSubmit} noValidate>
           <FormGroup row>
             <Label sm={{ size: 10, offset: 1 }} for="ratingInput">
               Your Movie Rating
@@ -72,10 +73,19 @@ const MovieReviewEditorModal = ({ show, movie, onClose, onSubmit }) => {
                 id="ratingInput"
                 name="rating"
                 type="number"
+                color={errors.rating ? 'danger' : null}
                 placeholder="How many stars would you rate this movie?"
-                value={values.rating}
-                onChange={handleRatingChange}
+                value={values.rating || ''}
+                onChange={handleChange}
+                required
+                invalid={errors.rating}
               />
+              {errors.rating && (
+                <Alert className="input-error-message" color="danger">
+                  <FontAwesomeIcon icon={faExclamationTriangle} />
+                  {'     ' + errors.rating}
+                </Alert>
+              )}
             </Col>
           </FormGroup>
 
@@ -90,9 +100,17 @@ const MovieReviewEditorModal = ({ show, movie, onClose, onSubmit }) => {
                 type="textarea"
                 rows="5"
                 placeholder="What do you have to say about this movie?"
-                value={values.review}
-                onChange={handleInputChange}
+                value={values.review || ''}
+                onChange={handleChange}
+                required
+                invalid={errors.review}
               />
+              {errors.review && (
+                <Alert className="input-error-message" color="danger">
+                  <FontAwesomeIcon icon={faExclamationTriangle} />
+                  {'     ' + errors.review}
+                </Alert>
+              )}
             </Col>
           </FormGroup>
 
